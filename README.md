@@ -39,8 +39,8 @@ Let's start with a simple repository with a single file (call it file.txt). The 
 and we can denote the state of this file as *A*. Suppose we made a change to the file:
 
 > Now is the time for all good men to come to
-> the aid of their country. This is just an
-> awesome paragraph!
+> the aid of their country. *This is just an
+> awesome paragraph!*
 > 
 > The quick brown fox jumped over the lazy
 > dog's back.
@@ -49,14 +49,14 @@ After saving the file locally in your favorite editor, git updates the **index**
 Your **working tree** at this point is just *A*. Right now the state of the repository looks
 like:
 
-`   master: A------A'`
-`         (WT)   (index)`
+    master: A------A'
+           (WT)   (index)
 
 If we now perform a `git add file.txt` followed with a subsequent `git commit`, the changes to file.txt
 are now recorded and the state of the repository looks like:
 
-`   master: A------B`
-`           (WT)`
+    master: A------B
+           (WT)
 
 
 Note that both `A` and `B` are now part of the current working tree (abbr. WT). What was called the *index*
@@ -69,8 +69,8 @@ to the file, the `HEAD` currently points to state `B`. If we were to do, say:
 
 the file would look like what it was before our edit and the repository would look like
 
-`   master: A------B`
-`           H`
+    master: A------B
+            H
 
 We could have also arrived at this state by typing `git checkout HEAD^` (the caret means back one commit
 from the reference name just to the left of it). Alternatively we could have done, `git checkout HEAD~1`,
@@ -82,9 +82,9 @@ make a new branch by doing something like
 
 `git checkout -b cool-branch`
 
-`   cool-branch:    ?`
-`                  /`
-`   master:      A------B`
+    cool-branch:    ?
+                   /
+    master:      A------B
 
 Note that the working tree of `cool-branch` contains `A` because we had moved `HEAD` to point to `A`.
 Running `git checkout -b branch-name` creates a new branch off of the current location of `HEAD`. If we now
@@ -107,12 +107,12 @@ To conclude this terminology second, let's edit the second paragraph and make a 
 > The quick brown *velociraptor* jumped over the lazy
 > dog's back.
 
-`git add file.txt`
-`git commit -m 'Velociraptors are awesome!'`
+    git add file.txt
+    git commit -m 'Velociraptors are awesome!'
 
-`   cool-branch:    C`
-`                  /`
-`   master:       A------B`
+    cool-branch:    C
+                   /
+    master:       A------B
 
 Note that `HEAD` now points to state `C` on `cool-branch`. Note also that the new commit *is not named
 `B` despite its previous commit being `A`*. Commit names are unique in the entire repository regardless
