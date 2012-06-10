@@ -182,6 +182,11 @@ nicely encapsulated as a linear progression of work from the tip of master, whic
 rebase, however, maintains the dev branch as up-to-date without sullying its history. The real benefit is
 seen when the dev branch gets merged back into the master branch.
 
+    It is important to understand that state `F` after the rebase is *identical in content* to state `I` after
+the merge. A rebase does not ever create a new commit, it *modifies existing ones*. This is why `git help rebase`
+issues a cautionary warning, saying that rebase modifies history. This is OK for commits that have yet to be
+merged onto the master branch, but I usually shy away from rebasing commits that already have.
+
 3. After working some more, I commit my changes to a new commit and push my changes to origin (my fork).
 
         dev:                                C------E------F------I
