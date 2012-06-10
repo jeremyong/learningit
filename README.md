@@ -152,7 +152,7 @@ main branch, I will do
 
     git rebase upstream/master
 
-This will take all the commits I have on my current branch and replay them on the tip of the `upstream/master`
+    This will take all the commits I have on my current branch and replay them on the tip of the `upstream/master`
 branch. This is preferable to having another merge commit on top of my existing changes. A rebase looks like this:
 
     dev:             C------E------F
@@ -165,7 +165,7 @@ branch. This is preferable to having another merge commit on top of my existing 
                                        /
     master:    A---B-----D-----G------H
 
-While a merge looks like this
+    While a merge looks like this
 
     dev:             C------E------F
                     /
@@ -177,7 +177,7 @@ While a merge looks like this
                     /                  /
     master:    A---B-----D-----G------H
 
-Note that the merge creates a *new commit* at the head of your dev branch. Your changes then, are no longer
+    Note that the merge creates a *new commit* at the head of your dev branch. Your changes then, are no longer
 nicely encapsulated as a linear progression of work from the tip of master, which is a moving target. The
 rebase, however, maintains the dev branch as up-to-date without sullying its history. The real benefit is
 seen when the dev branch gets merged back into the master branch.
