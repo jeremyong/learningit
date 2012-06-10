@@ -1,4 +1,4 @@
-learningit
+LearninGit
 ==========
 
 An overview of my git workflow. Feel free to suggest changes or fork your own version.
@@ -116,4 +116,87 @@ To conclude this terminology second, let's edit the second paragraph and make a 
 
 Note that `HEAD` now points to state `C` on `cool-branch`. Note also that the new commit *is not named
 `B` despite its previous commit being `A`*. Commit names are unique in the entire repository regardless
-of what branch it was committed to.
+of what branch it was committed to unless they are merged from one branch to another, rebased, or cherry-
+picked (more on these later).
+
+Part 3 - Setup
+--------------
+
+I like to have my remote aliases as follows:
+
+    origin -> my fork
+    upstream -> main repository
+
+To create the fork, one could simply hit the "fork" button in github. The purpose of the setup is to
+abstract one's on development efforts from the main repository. That way, the balance of power is such
+that nobody directly writes to the main repository. If *everyone* were to read and write directly to the
+main repository, chaos would certainly ensue, sooner the more collaboraters there are.
+
+You can name these remotes with:
+
+    git remote add origin url-to-your-fork
+    git remote add upstream url-to-main-repo
+
+If either `origin` or `upstream` already exist, you may remove them with `git remote rm remote-alias-to-remove`.
+
+Part 4 - Basic Workflow
+-----------------------
+
+1. Usually, I start by making sure my local environment has an up-to-date copy of my remote environment.
+I accomplish this with a `git fetch upstream`. This will sync all the branches existing on upstream and
+you should receive a status message notifying you of which branches received updates and which branches
+were created.
+
+2. Then, to ensure that my current work on branch `dev` say is compatible with the updated changes on the
+main branch, I will do
+
+    git rebase upstream/master
+
+This will take all the commits I have on my current branch and replay them on the tip of the `upstream/master`
+branch. This is preferable to having another merge commit on top of my existing changes. A rebase looks like this:
+
+    dev:             C------E------F
+                    /
+    master:    A---B-----D-----G-------H 
+
+    git rebase upstream/master
+    
+    dev:                                C------E------F
+                                       /
+    master:    A---B-----D-----G------H
+
+While a merge looks like this
+
+    dev:             C------E------F
+                    /
+    master:    A---B-----D-----G-------H 
+
+    git merge upstream/master
+    
+    dev:             C------E------F----I
+                    /                  /
+    master:    A---B-----D-----G------H
+
+Note that the merge creates a *new commit* at the head of your dev branch. Your changes then, are no longer
+nicely encapsulated as a linear progression of work from the tip of master, which is a moving target. The
+rebase, however, maintains the dev branch as up-to-date without sullying its history. The real benefit is
+seen when the dev branch gets merged back into the master branch.
+
+3. After working some more, I commit my changes to a new commit and push my changes to origin (my fork).
+
+    dev:                                C------E------F------I
+                                       /
+    master:    A---B-----D-----G------H
+     
+    git push origin dev
+
+4. After I am satisfied with my work after several iterations of steps (1) through (3), I submit a pull request
+in github from my fork page. After the code is approved and *merged in* (here a merge is appropriate), the
+git topology looks like this:
+
+    dev:                                C------E------F------I
+                                       /
+    master:    A---B-----D-----G------H-----C-----E-----F-----I
+
+Part 5 - Common Scenarios
+-------------------------
