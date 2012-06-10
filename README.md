@@ -150,32 +150,32 @@ were created.
 2. Then, to ensure that my current work on branch `dev` say is compatible with the updated changes on the
 main branch, I will do
 
-    git rebase upstream/master
+        git rebase upstream/master
 
     This will take all the commits I have on my current branch and replay them on the tip of the `upstream/master`
 branch. This is preferable to having another merge commit on top of my existing changes. A rebase looks like this:
 
-    dev:             C------E------F
-                    /
-    master:    A---B-----D-----G-------H 
-
-    git rebase upstream/master
+        dev:             C------E------F
+                        /
+        master:    A---B-----D-----G-------H 
     
-    dev:                                C------E------F
-                                       /
-    master:    A---B-----D-----G------H
-
-    While a merge looks like this
-
-    dev:             C------E------F
-                    /
-    master:    A---B-----D-----G-------H 
-
-    git merge upstream/master
+        git rebase upstream/master
+        
+        dev:                                C------E------F
+                                           /
+        master:    A---B-----D-----G------H
     
-    dev:             C------E------F----I
-                    /                  /
-    master:    A---B-----D-----G------H
+        While a merge looks like this
+    
+        dev:             C------E------F
+                        /
+        master:    A---B-----D-----G-------H 
+    
+        git merge upstream/master
+        
+        dev:             C------E------F----I
+                        /                  /
+        master:    A---B-----D-----G------H
 
     Note that the merge creates a *new commit* at the head of your dev branch. Your changes then, are no longer
 nicely encapsulated as a linear progression of work from the tip of master, which is a moving target. The
@@ -184,19 +184,19 @@ seen when the dev branch gets merged back into the master branch.
 
 3. After working some more, I commit my changes to a new commit and push my changes to origin (my fork).
 
-    dev:                                C------E------F------I
-                                       /
-    master:    A---B-----D-----G------H
-     
-    git push origin dev
+        dev:                                C------E------F------I
+                                           /
+        master:    A---B-----D-----G------H
+         
+        git push origin dev
 
 4. After I am satisfied with my work after several iterations of steps (1) through (3), I submit a pull request
 in github from my fork page. After the code is approved and *merged in* (here a merge is appropriate), the
 git topology looks like this:
 
-    dev:                                C------E------F------I
-                                       /
-    master:    A---B-----D-----G------H-----C-----E-----F-----I
+        dev:                                C------E------F------I
+                                           /
+        master:    A---B-----D-----G------H-----C-----E-----F-----I
 
 Part 5 - Common Scenarios
 -------------------------
