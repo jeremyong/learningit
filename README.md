@@ -165,7 +165,7 @@ branch. This is preferable to having another merge commit on top of my existing 
                                            /
         master:    A---B-----D-----G------H
     
-        While a merge looks like this
+    While a merge looks like this:
     
         dev:             C------E------F
                         /
@@ -190,7 +190,21 @@ seen when the dev branch gets merged back into the master branch.
          
         git push origin dev
 
-4. After I am satisfied with my work after several iterations of steps (1) through (3), I submit a pull request
+4. In preparation to submit a pull request, I usually run a `git rebase -i HEAD~n`, where `n` is the number
+of commits I have on my current branch. The interactive rebase allows me to edit commit messages, reorder
+commits, and squash small commits in ways that make sense (make sure that commits that are squashed together
+are related!).
+
+    Upon running `git rebase -i`, git will pull up the editor git is configured to use with a `n` lines. Each
+line contains a command (defaults to pick), a commit number, and a commit message. The lines can be shuffled
+within the file to change the commit application order. In addition, the 'pick' command can be changed to be
+'r' for reword, or 's' for squash. Squashing a commit will squash it with the commit directly preceding it 
+(above it in the file).
+
+    **Warning**: Deleting a line in this file will remove a commit from your branch. If things go awry, simply
+run `git rebase --abort` and git will rewind the back to its original state prior to the rebase.
+
+5. After I am satisfied with my work after several iterations of steps (1) through (4), I submit a pull request
 in github from my fork page. After the code is approved and *merged in* (here a merge is appropriate), the
 git topology looks like this:
 
@@ -200,3 +214,73 @@ git topology looks like this:
 
 Part 5 - Common Scenarios
 -------------------------
+
+There are a number of common scenarios that crop up during the course of a work session that disrupt the
+above workflow. The following itemized list addresses the most frequent ones and covers the appropriate
+response.
+
+### I edit changes on the wrong branch and need to move them to a different branch.
+
+The remedy is to use `git stash`. This will put your current index in the stash. Then you can simply
+`git checkout (-b) branch-that-you-want` and subsequently run `git stash pop` to recover the index on 
+top of the new working tree.
+
+If you have already committed the changes, you can run `git reset HEAD^`. This will move the head back
+one commit and turn the last commit into unstaged changes (the last commit is now the new index). Finally,
+perform the steps in the above paragraph.
+
+Alternatively, if the changes are already committed, you could checkout to a new branch, checkout back
+to the old branch, and `git reset --hard HEAD^` to move the old branch back to its initial state.
+
+In all of these changes, you could substitute `HEAD^` with `HEAD~1` or the commit number of your last 
+commit.
+
+### After a rebase, git complains that I need to pull first when I try to push
+
+Don't pull first. Pulling will fetch your forks copy of your current dev branch and attempt to merge the
+fork version in your local branch. The reason git is complaining is because the commit histories do not
+line up after the rebase. This is expected because your rebase has *modified history*. Here, assuming 
+you rebased correctly, you should do a `git push origin -f branch-name`. The `-f` flag overwrites the 
+remote history with your local one. A safer way of doing this is to push your branch onto a new branch
+with
+
+    git push origin branch-name:new-branch-name
+
+This avoids potentially losing information in the event that your rebase was incorrect. Just remove to
+delete the branch with `git push origin :new-branch-name` afterwords or suffer branch pollution.
+
+### I committed too early because I [forgot to ad a file]/[messed up the commit message]/[had a typo]/etc.
+
+Simply do `git reset HEAD^`. This moves the `HEAD` pointer back one commit and moves the contents of 
+that commit to the index. Then you are free to make additional changes and commit again.
+
+### I completely messed up my local branch. I want it to look like upstream/branch or origin/branch.
+
+    git checkout branch
+    git reset --hard [upstream|origin]/branch
+
+Part 6 - Where to go from here?
+-------------------------------
+
+The best thing you can do for yourself is to *learn to read the git help pages*. The built-in git
+documentation is superb and highly readable. Good tools to read about first are
+
+    git help commit
+    git help rebase
+    git help merge
+    git help log
+    git help show
+    git help diff
+    git help status
+
+The last four commands are your 'eyes' when working on a git project. You should feel comfortable enough
+to liberally use all of them constantly to ensure that git is doing what you think it should be doing.
+Feel free to set up aliases and come up with good branch name and commit message conventions. Establishing
+consistency in both will enhance your git vision when browsing the logs and lead to a faster solution.
+
+Last but not least, continue to read and observe other git-masters at work. The workflow that I've 
+described here is merely a starting point, but I'm certain many optimizations and changes could be made.
+Most of all, have fun when you do it!
+
+Cheers,
+Jeremy
