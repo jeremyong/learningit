@@ -214,8 +214,8 @@ in github from my fork page. After the code is approved and *merged in* (here a 
 git topology looks like this:
 
         dev:                                C------E------F------I
-                                           /
-        master:    A---B-----D-----G------H-----C-----E-----F-----I
+                                           /                      \
+        master:    A---B-----D-----G------H------------------------J
 
 Part 5 - Common Scenarios
 -------------------------
