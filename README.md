@@ -72,7 +72,7 @@ the file would look like what it was before our edit and the repository would lo
     master: A------B
             H
 
-We could have also arrived at this state by typing `git checkout HEAD^` (the caret means back one commit
+Note that you can use `git log` to see the commit hash which is pretty much guaranteed to be unique. We could have also arrived at this state by typing `git checkout HEAD^` (the caret means back one commit
 from the reference name just to the left of it). Alternatively we could have done, `git checkout HEAD~1`,
 where `ref~n` denotes the nth commit before ref.
 
@@ -88,7 +88,7 @@ make a new branch by doing something like
 
 Note that the working tree of `cool-branch` contains `A` because we had moved `HEAD` to point to `A`.
 Running `git checkout -b branch-name` creates a new branch off of the current location of `HEAD`. If we now
-edit the file, it will look initially like:
+edit the file, it will look like:
 
 > Now is the time for all good men to come to
 > the aid of their country. This is just a
@@ -97,8 +97,8 @@ edit the file, it will look initially like:
 > The quick brown fox jumped over the lazy
 > dog's back.
 
-because the working tree of cool-branch contains state `A` and no commits have been made since then.
-To conclude this terminology second, let's edit the second paragraph and make a commit:
+because the working tree of cool-branch contains state `A` and nothing else.
+To conclude this terminology section, let's edit the second paragraph and make a commit:
 
 > Now is the time for all good men to come to
 > the aid of their country. This is just a
@@ -130,14 +130,14 @@ I like to have my remote aliases as follows:
 To create the fork, one could simply hit the "fork" button in github. The purpose of the setup is to
 abstract one's on development efforts from the main repository. That way, the balance of power is such
 that nobody directly writes to the main repository. If *everyone* were to read and write directly to the
-main repository, chaos would certainly ensue, sooner the more collaboraters there are.
+main repository, chaos would certainly ensue, depending on the number of collaboraters.
 
 You can name these remotes with:
 
     git remote add origin url-to-your-fork
     git remote add upstream url-to-main-repo
 
-If either `origin` or `upstream` already exist, you may remove them with `git remote rm remote-alias-to-remove`.
+If either `origin` or `upstream` already exist, you may remove them with `git remote rm remote-alias-to-remove`. Incidentally, if there are other collaborators, you can add remote aliases to their forks as well and fetch their changes for local viewing (and editing).
 
 Part 4 - Basic Workflow
 -----------------------
